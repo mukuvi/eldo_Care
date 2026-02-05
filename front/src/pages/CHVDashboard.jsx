@@ -6,10 +6,10 @@ export default function CHVDashboard() {
       padding: "20px"
     }}>
       <div style={{
-        backgroundColor: "#FFFFFF", /* White background for card */
+        backgroundColor: "#FFFFFF", 
         borderRadius: "12px",
         padding: "40px",
-        boxShadow: "0 4px 15px rgba(34, 139, 34, 0.15)", /* Green-tinted shadow */
+        boxShadow: "0 4px 15px rgba(34, 139, 34, 0.15)", 
         border: "1px solid #E5E7EB",
         textAlign: "center"
       }}>
@@ -19,10 +19,10 @@ export default function CHVDashboard() {
           justifyContent: "center",
           width: "80px",
           height: "80px",
-          backgroundColor: "#F0F9F0", /* Light green circle */
+          backgroundColor: "#F0F9F0", 
           borderRadius: "50%",
           marginBottom: "25px",
-          border: "3px solid #228B22" /* Green border */
+          border: "3px solid #228B22" 
         }}>
           <span style={{ fontSize: "36px" }}>👨‍⚕️</span>
         </div>
