@@ -39,7 +39,7 @@ export default function Navbar() {
       }}>
         <span style={{
           backgroundColor: "#228B22", 
-          color: "#FFFFFF", /* White text */
+          color: "#FFFFFF", 
           width: "32px",
           height: "32px",
           borderRadius: "50%",
