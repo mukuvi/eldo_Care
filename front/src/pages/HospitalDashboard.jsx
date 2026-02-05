@@ -36,7 +36,7 @@ export default function HospitalDashboard() {
         border: '2px solid #228B22' /* Green border */
       }}>
         <p style={{ 
-          color: '#228B22', /* Green text */
+          color: '#228B22', 
           fontSize: '18px',
           fontWeight: '600',
           margin: '0'
@@ -48,7 +48,7 @@ export default function HospitalDashboard() {
           width: '40px',
           height: '40px',
           border: '4px solid #F0F9F0',
-          borderTop: '4px solid #DC2626', /* Red spinner */
+          borderTop: '4px solid #DC2626', 
           borderRadius: '50%',
           animation: 'spin 1s linear infinite',
           margin: '0 auto'
@@ -70,7 +70,7 @@ export default function HospitalDashboard() {
       padding: '0 20px'
     }}>
       <h1 style={{
-        color: '#DC2626', /* Red for main heading */
+        color: '#DC2626', 
         borderBottom: '3px solid #228B22', 
         paddingBottom: '10px',
         marginBottom: '30px'
