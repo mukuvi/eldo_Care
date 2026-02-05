@@ -141,7 +141,7 @@ export default function CHVDashboard() {
           borderLeft: "4px solid #DC2626" /* Red accent border */
         }}>
           <h3 style={{
-            color: "#DC2626", /* Red for alert heading */
+            color: "#DC2626",
             marginBottom: "10px",
             display: "flex",
             alignItems: "center",
