@@ -3,10 +3,10 @@ const router = express.Router();
 
 router.get("/summary", async (req, res) => {
   res.json({
-    totalRevenue: 0,
-    hospitalSubscriptions: 0,
-    ambulanceLeads: 0,
-    chvPayouts: 0
+    totalRevenue: 12000,
+    hospitalSubscriptions: 4,
+    ambulanceLeads: 18,
+    chvPayouts: 3000
   });
 });
 
