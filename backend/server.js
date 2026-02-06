@@ -27,6 +27,9 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use('/voice', voiceRoutes);
 app.use('/api', apiRoutes);
 app.use("/api/billing", billingRoutes);
+app.use("/api/chv", require("./routes/chv"));
+app.use("/uploads", express.static("uploads"));
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', time: new Date().toISOString() });
 });

@@ -5,7 +5,7 @@ import Navbar from "./components/layout/Navbar";
 import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
 import HospitalDashboard from "./pages/HospitalDashboard";
-import CHVDashboard from "./pages/CHVDashboard";
+import CHVDashboard from "./pages/chv/CHVDashboard";
 import NGODashboard from "./pages/ngo/NGODashboard";
 import CallMe from "./pages/CallMe";
 
