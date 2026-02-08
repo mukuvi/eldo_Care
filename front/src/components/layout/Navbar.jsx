@@ -1,209 +1,93 @@
+// frontend/components/Navbar.jsx
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-
-const linkStyle = {
-  marginRight: 20,
-  textDecoration: "none",
-  fontWeight: "bold",
-  color: "#228B22",
-  padding: "8px 12px",
-  borderRadius: "6px",
-  transition: "all 0.3s ease"
-};
-
-const activeLinkStyle = {
-  backgroundColor: "#DC2626", 
-  color: "#FFFFFF", 
-  padding: "8px 12px",
-  borderRadius: "6px"
-};
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/admin", label: "Admin" },
+    { to: "/hospital", label: "Hospital" },
+    { to: "/chv", label: "CHV" },
+    { to: "/ngo", label: "NGO / Gov" },
+    { to: "/call-me", label: "Call Me" }
+  ];
 
   return (
-    <nav
-      style={{
-        padding: "16px 32px",
-        backgroundColor: "#FFFFFF", 
-        borderBottom: "2px solid #228B22",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        boxShadow: "0 2px 10px rgba(34, 139, 34, 0.1)" 
-      }}
-    >
-      <button
-        onClick={() => navigate("/")}
-        style={{
-          fontWeight: "bold", 
-          fontSize: 22,
-          color: "#DC2626", 
-          display: "flex",
-          alignItems: "center",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          padding: "8px 12px",
-          borderRadius: "6px",
-          transition: "all 0.3s ease"
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.backgroundColor = "#FEF2F2";
-          e.target.style.transform = "translateY(-2px)";
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.backgroundColor = "transparent";
-          e.target.style.transform = "translateY(0)";
-        }}
-      >
-        <span style={{
-          backgroundColor: "#228B22", 
-          color: "#FFFFFF", 
-          width: "32px",
-          height: "32px",
-          borderRadius: "50%",
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginRight: "10px",
-          fontSize: "16px"
-        }}>⚕️</span>
-        EldoCare
-      </button>
+    <nav className="sticky top-0 z-50 bg-white border-b border-green-600 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <button
+              onClick={() => navigate("/")}
+              className="flex items-center gap-3 text-2xl font-bold text-green-700 hover:text-green-800 transition-colors"
+            >
+              <span className="bg-green-700 text-white px-3 py-1 rounded-full text-xl">⚕️</span>
+              EldoCare
+            </button>
+          </div>
 
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <NavLink 
-          to="/" 
-          style={({ isActive }) => ({
-            ...linkStyle,
-            ...(isActive ? activeLinkStyle : {})
-          })}
-          onMouseEnter={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "#FEF2F2"; 
-              e.target.style.color = "#DC2626"; 
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#228B22"; 
-            }
-          }}
-        >
-          Home
-        </NavLink>
-        
-        <NavLink 
-          to="/admin" 
-          style={({ isActive }) => ({
-            ...linkStyle,
-            ...(isActive ? activeLinkStyle : {})
-          })}
-          onMouseEnter={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "#FEF2F2";
-              e.target.style.color = "#DC2626";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#228B22";
-            }
-          }}
-        >
-          Admin
-        </NavLink>
-        
-        <NavLink 
-          to="/hospital" 
-          style={({ isActive }) => ({
-            ...linkStyle,
-            ...(isActive ? activeLinkStyle : {})
-          })}
-          onMouseEnter={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "#FEF2F2";
-              e.target.style.color = "#DC2626";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#228B22";
-            }
-          }}
-        >
-          Hospital
-        </NavLink>
-        
-        <NavLink 
-          to="/chv" 
-          style={({ isActive }) => ({
-            ...linkStyle,
-            ...(isActive ? activeLinkStyle : {})
-          })}
-          onMouseEnter={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "#FEF2F2";
-              e.target.style.color = "#DC2626";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#228B22";
-            }
-          }}
-        >
-          CHV
-        </NavLink>
-        
-        <NavLink 
-          to="/ngo" 
-          style={({ isActive }) => ({
-            ...linkStyle,
-            ...(isActive ? activeLinkStyle : {})
-          })}
-          onMouseEnter={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "#FEF2F2";
-              e.target.style.color = "#DC2626";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#228B22";
-            }
-          }}
-        >
-          NGO / Gov
-        </NavLink>
-        
-        <NavLink 
-          to="/call-me" 
-          style={({ isActive }) => ({
-            ...linkStyle,
-            ...(isActive ? activeLinkStyle : {})
-          })}
-          onMouseEnter={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "#FEF2F2";
-              e.target.style.color = "#DC2626";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!e.target.className.includes("active")) {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#228B22";
-            }
-          }}
-        >
-          Call Me
-        </NavLink>
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive
+                      ? "bg-red-600 text-white shadow-sm"
+                      : "text-gray-700 hover:bg-green-50 hover:text-green-800"
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button
+              onClick={toggleMenu}
+              className="p-2 rounded-lg text-gray-700 hover:bg-green-50 focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isOpen && (
+        <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
+          <div className="px-4 pt-2 pb-4 space-y-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  `block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                    isActive
+                      ? "bg-red-50 text-red-700"
+                      : "text-gray-700 hover:bg-green-50 hover:text-green-800"
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

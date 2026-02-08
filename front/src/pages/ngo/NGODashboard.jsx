@@ -1,151 +1,59 @@
 import { useEffect, useState } from "react";
 import { fetchSummary } from "../../api/ngo.api";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
+import { PhoneIcon, ExclamationTriangleIcon, BuildingOfficeIcon, ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
+
+// Color palette
+const COLORS = ["#228B22", "#DC2626", "#F59E0B", "#3B82F6", "#8B5CF6"];
 
 export default function NGODashboard() {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Dummy location data for demo (replace with real CallSession.location)
+  const callerLocations = [
+    { id: 1, lat: -1.2921, lng: 36.8219, risk: "high", description: "Fever & cough" },
+    { id: 2, lat: -1.2864, lng: 36.8172, risk: "medium", description: "Headache" },
+    { id: 3, lat: -1.3000, lng: 36.7800, risk: "critical", description: "Chest pain" },
+  ];
+
   useEffect(() => {
     async function loadSummary() {
       try {
         const res = await fetchSummary();
         setSummary(res.data);
-      // eslint-disable-next-line no-unused-vars
       } catch (err) {
-        setError("Failed to load NGO dashboard data");
+        console.error("Failed to load NGO data", err);
+        setError("Failed to load dashboard data. Please try again.");
       } finally {
         setLoading(false);
       }
     }
-
     loadSummary();
   }, []);
 
-  // =======================
-  // Loading State
-  // =======================
   if (loading) {
     return (
-      <div style={{ 
-        textAlign: "center", 
-        padding: "100px 20px",
-        backgroundColor: "#F8F9FA",
-        minHeight: "100vh"
-      }}>
-        <div style={{
-          display: "inline-block",
-          padding: "40px 60px",
-          backgroundColor: "#FFFFFF",
-          borderRadius: "16px",
-          boxShadow: "0 8px 32px rgba(34, 139, 34, 0.1)",
-          border: "2px solid #228B22"
-        }}>
-          <div style={{
-            width: "60px",
-            height: "60px",
-            border: "4px solid #F0F9F0",
-            borderTop: "4px solid #DC2626",
-            borderRadius: "50%",
-            animation: "spin 1s linear infinite",
-            margin: "0 auto 25px"
-          }}></div>
-          <h3 style={{
-            color: "#228B22",
-            fontSize: "24px",
-            fontWeight: "600",
-            margin: "0"
-          }}>
-            Loading NGO Dashboard…
-          </h3>
-          <p style={{
-            color: "#666666",
-            marginTop: "10px",
-            fontSize: "14px"
-          }}>
-            Fetching latest health impact metrics
-          </p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-600 mx-auto mb-6"></div>
+          <p className="text-xl font-medium text-gray-700">Loading NGO Dashboard...</p>
         </div>
-        <style>{`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}</style>
       </div>
     );
   }
 
-  // =======================
-  // Error State
-  // =======================
   if (error) {
     return (
-      <div style={{ 
-        textAlign: "center", 
-        padding: "100px 20px",
-        backgroundColor: "#F8F9FA",
-        minHeight: "100vh"
-      }}>
-        <div style={{
-          display: "inline-block",
-          padding: "40px 60px",
-          backgroundColor: "#FFFFFF",
-          borderRadius: "16px",
-          boxShadow: "0 8px 32px rgba(220, 38, 38, 0.1)",
-          border: "2px solid #DC2626",
-          maxWidth: "500px"
-        }}>
-          <div style={{
-            width: "80px",
-            height: "80px",
-            backgroundColor: "#FEF2F2",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 25px"
-          }}>
-            <span style={{ fontSize: "40px", color: "#DC2626" }}>⚠️</span>
-          </div>
-          <h3 style={{
-            color: "#DC2626",
-            fontSize: "24px",
-            fontWeight: "600",
-            margin: "0"
-          }}>
-            Unable to Load Data
-          </h3>
-          <p style={{
-            color: "#666666",
-            marginTop: "15px",
-            fontSize: "16px",
-            lineHeight: "1.6"
-          }}>
-            {error}. Please check your connection and try again.
-          </p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+        <div className="bg-white p-10 rounded-2xl shadow-xl max-w-lg w-full text-center border border-red-200">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
+          <p className="text-gray-700 mb-6">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            style={{
-              marginTop: "25px",
-              padding: "12px 24px",
-              backgroundColor: "#DC2626",
-              color: "#FFFFFF",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "16px",
-              fontWeight: "600",
-              cursor: "pointer",
-              transition: "all 0.3s ease"
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#B91C1C";
-              e.target.style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "#DC2626";
-              e.target.style.transform = "translateY(0)";
-            }}
+            className="px-8 py-3 bg-green-700 text-white font-medium rounded-lg hover:bg-green-800 transition shadow-md"
           >
             Retry
           </button>
@@ -154,378 +62,172 @@ export default function NGODashboard() {
     );
   }
 
-  // =======================
-  // Render Dashboard
-  // =======================
+  // Chart data preparation
+  const riskData = [
+    { name: "Low", value: summary?.lowRisk || 0 },
+    { name: "Medium", value: summary?.mediumRisk || 0 },
+    { name: "High", value: summary?.highRiskCases || 0 },
+    { name: "Critical", value: summary?.critical || 0 },
+  ];
+
+  const escalationData = [
+    { name: "Escalated", value: summary?.escalations || 0 },
+    { name: "Non-Escalated", value: (summary?.totalCalls || 0) - (summary?.escalations || 0) },
+  ];
+
   return (
-    <div style={{ 
-      padding: "30px 20px",
-      backgroundColor: "#F8F9FA",
-      minHeight: "100vh",
-      maxWidth: "1400px",
-      margin: "0 auto"
-    }}>
-      {/* Header Section */}
-      <div style={{
-        backgroundColor: "#FFFFFF",
-        padding: "35px",
-        borderRadius: "16px",
-        marginBottom: "30px",
-        boxShadow: "0 4px 20px rgba(34, 139, 34, 0.08)",
-        borderLeft: "6px solid #DC2626"
-      }}>
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: "20px"
-        }}>
-          <div>
-            <h1 style={{
-              color: "#DC2626",
-              fontSize: "32px",
-              fontWeight: "bold",
-              margin: "0 0 8px 0"
-            }}>
-              NGO / Government Dashboard
-            </h1>
-            <p style={{
-              color: "#666666",
-              fontSize: "16px",
-              margin: "0"
-            }}>
-              Comprehensive overview of health initiatives and impact metrics
-            </p>
-          </div>
-          <div style={{
-            backgroundColor: "#F0F9F0",
-            color: "#228B22",
-            padding: "10px 20px",
-            borderRadius: "12px",
-            fontSize: "14px",
-            fontWeight: "600",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px"
-          }}>
-            <span>📊</span>
-            Last updated: Today
-          </div>
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-green-800 tracking-tight">
+            NGO / Government Dashboard
+          </h1>
+          <p className="mt-3 text-lg text-gray-600">
+            Real-time overview of community health calls, escalations, and geographic impact
+          </p>
         </div>
-      </div>
 
-      {/* Main Stats Grid */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-        gap: "25px",
-        marginBottom: "40px"
-      }}>
-        <Metric 
-          label="Total Calls" 
-          value={summary.totalCalls} 
-          icon="📞" 
-          description="Health consultations provided"
-          trend="+12% this month"
-          color="#228B22"
-        />
-        <Metric 
-          label="High Risk Cases" 
-          value={summary.highRiskCases} 
-          icon="⚠️" 
-          description="Requiring immediate attention"
-          trend="Critical monitoring"
-          color="#DC2626"
-        />
-        <Metric 
-          label="Escalations" 
-          value={summary.escalations} 
-          icon="🏥" 
-          description="To hospital facilities"
-          trend="+8% from last week"
-          color="#228B22"
-        />
-        <Metric 
-          label="Revenue Events" 
-          value={summary.revenueEvents} 
-          icon="💰" 
-          description="Billing incidents recorded"
-          trend="+5% growth"
-          color="#DC2626"
-        />
-      </div>
-
-      {/* Additional Stats Section */}
-      <div style={{
-        backgroundColor: "#FFFFFF",
-        padding: "35px",
-        borderRadius: "16px",
-        marginBottom: "40px",
-        boxShadow: "0 4px 20px rgba(34, 139, 34, 0.08)"
-      }}>
-        <h2 style={{
-          color: "#228B22",
-          fontSize: "24px",
-          fontWeight: "bold",
-          margin: "0 0 25px 0",
-          display: "flex",
-          alignItems: "center",
-          gap: "12px"
-        }}>
-          <span style={{
-            backgroundColor: "#F0F9F0",
-            width: "40px",
-            height: "40px",
-            borderRadius: "10px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          }}>📈</span>
-          Additional Insights
-        </h2>
-        
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "20px"
-        }}>
-          <InsightCard 
-            title="Avg. Response Time" 
-            value="4.2 min" 
-            subtitle="From call to triage"
-            color="#228B22"
+        {/* Key Metrics */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <MetricCard
+            icon={<PhoneIcon className="h-8 w-8 text-green-600" />}
+            title="Total Calls"
+            value={summary?.totalCalls?.toLocaleString() || "0"}
+            color="green"
           />
-          <InsightCard 
-            title="CHV Coverage" 
-            value="78%" 
-            subtitle="Community reach"
-            color="#228B22"
+          <MetricCard
+            icon={<ExclamationTriangleIcon className="h-8 w-8 text-red-600" />}
+            title="High Risk Cases"
+            value={summary?.highRiskCases?.toLocaleString() || "0"}
+            color="red"
           />
-          <InsightCard 
-            title="Pending Cases" 
-            value="23" 
-            subtitle="Awaiting review"
-            color="#DC2626"
+          <MetricCard
+            icon={<BuildingOfficeIcon className="h-8 w-8 text-green-600" />}
+            title="Escalations"
+            value={summary?.escalations?.toLocaleString() || "0"}
+            color="green"
           />
-          <InsightCard 
-            title="Satisfaction Rate" 
-            value="94%" 
-            subtitle="Patient feedback"
-            color="#228B22"
+          <MetricCard
+            icon={<ArrowTrendingUpIcon className="h-8 w-8 text-green-600" />}
+            title="Revenue Events"
+            value={summary?.revenueEvents?.toLocaleString() || "0"}
+            color="green"
           />
         </div>
-      </div>
 
-      {/* Quick Actions */}
-      <div style={{
-        backgroundColor: "#FFFFFF",
-        padding: "35px",
-        borderRadius: "16px",
-        boxShadow: "0 4px 20px rgba(34, 139, 34, 0.08)"
-      }}>
-        <h2 style={{
-          color: "#DC2626",
-          fontSize: "24px",
-          fontWeight: "bold",
-          margin: "0 0 25px 0"
-        }}>
-          Quick Actions
-        </h2>
-        <div style={{
-          display: "flex",
-          gap: "15px",
-          flexWrap: "wrap"
-        }}>
-          <ActionButton 
-            icon="📥" 
-            label="Export Report" 
-            color="#228B22"
-          />
-          <ActionButton 
-            icon="🔔" 
-            label="View Alerts" 
-            color="#DC2626"
-            badge="3"
-          />
-          <ActionButton 
-            icon="👥" 
-            label="Manage Teams" 
-            color="#228B22"
-          />
-          <ActionButton 
-            icon="⚙️" 
-            label="Settings" 
-            color="#666666"
-          />
+        {/* GIS Map - Caller Locations */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden mb-10">
+          <div className="p-6 border-b bg-gray-50">
+            <h2 className="text-2xl font-semibold text-green-800">
+              Caller Locations Across Kenya
+            </h2>
+          </div>
+          <div className="h-96">
+            <MapContainer center={[-1.286389, 36.817223]} zoom={7} className="h-full w-full">
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              {callerLocations.map((loc) => (
+                <Marker key={loc.id} position={[loc.lat, loc.lng]}>
+                  <Popup>
+                    <strong>Risk:</strong> {loc.risk.toUpperCase()}<br />
+                    <strong>Description:</strong> {loc.description}<br />
+                    <strong>Location:</strong> {loc.lat.toFixed(4)}, {loc.lng.toFixed(4)}
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </div>
+        </div>
+
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+          {/* Risk Level Pie Chart */}
+          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+            <h3 className="text-xl font-semibold text-green-800 mb-6">Risk Level Distribution</h3>
+            <ResponsiveContainer width="100%" height={320}>
+              <PieChart>
+                <Pie
+                  data={riskData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={110}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                >
+                  {riskData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend verticalAlign="bottom" height={36} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Escalation Bar Chart */}
+          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+            <h3 className="text-xl font-semibold text-green-800 mb-6">Escalation Overview</h3>
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={escalationData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#228B22" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+          <h2 className="text-2xl font-semibold text-green-800 mb-6">Quick Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <ActionButton icon="📥" label="Export Report" color="green" />
+            <ActionButton icon="🔔" label="View Alerts" color="red" badge="3" />
+            <ActionButton icon="👥" label="Manage Teams" color="green" />
+            <ActionButton icon="⚙️" label="Settings" color="gray" />
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function Metric({ label, value, icon, description, trend, color }) {
+// Reusable Components
+function MetricCard({ icon, title, value, color }) {
   return (
-    <div style={{
-      backgroundColor: "#FFFFFF",
-      padding: "30px",
-      borderRadius: "16px",
-      boxShadow: "0 4px 16px rgba(0, 0, 0, 0.05)",
-      borderTop: `4px solid ${color}`,
-      transition: "transform 0.3s ease, box-shadow 0.3s ease",
-      cursor: "pointer"
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = "translateY(-8px)";
-      e.currentTarget.style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.1)";
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = "translateY(0)";
-      e.currentTarget.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.05)";
-    }}
-    >
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom: "20px"
-      }}>
-        <div style={{
-          backgroundColor: color === "#DC2626" ? "#FEF2F2" : "#F0F9F0",
-          width: "56px",
-          height: "56px",
-          borderRadius: "12px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "24px"
-        }}>
+    <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all">
+      <div className="flex items-center justify-between">
+        <div className={`p-4 rounded-xl ${color === 'red' ? 'bg-red-50' : 'bg-green-50'}`}>
           {icon}
         </div>
-        <span style={{
-          backgroundColor: color === "#DC2626" ? "#FEF2F2" : "#F0F9F0",
-          color: color,
-          padding: "6px 12px",
-          borderRadius: "20px",
-          fontSize: "12px",
-          fontWeight: "600"
-        }}>
-          {trend}
-        </span>
+        <span className="text-sm font-medium text-gray-500">{title}</span>
       </div>
-      
-      <h2 style={{
-        fontSize: "42px",
-        fontWeight: "bold",
-        color: color,
-        margin: "0 0 10px 0",
-        lineHeight: "1"
-      }}>
+      <p className={`mt-4 text-4xl font-bold ${color === 'red' ? 'text-red-600' : 'text-green-700'}`}>
         {value}
-      </h2>
-      
-      <p style={{
-        color: "#333333",
-        fontSize: "18px",
-        fontWeight: "600",
-        margin: "0 0 8px 0"
-      }}>
-        {label}
-      </p>
-      
-      <p style={{
-        color: "#666666",
-        fontSize: "14px",
-        margin: "0",
-        opacity: "0.8"
-      }}>
-        {description}
-      </p>
-    </div>
-  );
-}
-
-function InsightCard({ title, value, subtitle, color }) {
-  return (
-    <div style={{
-      backgroundColor: color === "#DC2626" ? "#FEF2F2" : "#F0F9F0",
-      padding: "20px",
-      borderRadius: "12px",
-      border: `1px solid ${color}20`
-    }}>
-      <p style={{
-        color: color,
-        fontSize: "14px",
-        fontWeight: "600",
-        margin: "0 0 10px 0",
-        textTransform: "uppercase",
-        letterSpacing: "0.5px"
-      }}>
-        {title}
-      </p>
-      <h3 style={{
-        fontSize: "28px",
-        fontWeight: "bold",
-        color: color,
-        margin: "0 0 5px 0"
-      }}>
-        {value}
-      </h3>
-      <p style={{
-        color: "#666666",
-        fontSize: "13px",
-        margin: "0"
-      }}>
-        {subtitle}
       </p>
     </div>
   );
 }
 
 function ActionButton({ icon, label, color, badge }) {
+  const bgColor = color === 'red' ? 'bg-red-50 hover:bg-red-100' : color === 'gray' ? 'bg-gray-50 hover:bg-gray-100' : 'bg-green-50 hover:bg-green-100';
+  const textColor = color === 'red' ? 'text-red-700' : color === 'gray' ? 'text-gray-700' : 'text-green-700';
+
   return (
-    <button style={{
-      padding: "16px 24px",
-      backgroundColor: color === "#666666" ? "#F8F9FA" : (color === "#DC2626" ? "#FEF2F2" : "#F0F9F0"),
-      color: color,
-      border: `2px solid ${color}`,
-      borderRadius: "12px",
-      fontSize: "16px",
-      fontWeight: "600",
-      cursor: "pointer",
-      transition: "all 0.3s ease",
-      display: "flex",
-      alignItems: "center",
-      gap: "12px",
-      position: "relative"
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = "translateY(-4px)";
-      e.currentTarget.style.backgroundColor = color === "#666666" ? "#F1F3F4" : (color === "#DC2626" ? "#FECACA" : "#BBF7D0");
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = "translateY(0)";
-      e.currentTarget.style.backgroundColor = color === "#666666" ? "#F8F9FA" : (color === "#DC2626" ? "#FEF2F2" : "#F0F9F0");
-    }}
+    <button
+      className={`flex items-center justify-center gap-3 p-6 rounded-xl ${bgColor} ${textColor} font-medium text-lg transition-all hover:shadow-md relative`}
     >
-      <span style={{ fontSize: "20px" }}>{icon}</span>
+      <span className="text-2xl">{icon}</span>
       {label}
       {badge && (
-        <span style={{
-          position: "absolute",
-          top: "-8px",
-          right: "-8px",
-          backgroundColor: "#DC2626",
-          color: "#FFFFFF",
-          fontSize: "12px",
-          fontWeight: "bold",
-          width: "20px",
-          height: "20px",
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}>
+        <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
           {badge}
         </span>
       )}

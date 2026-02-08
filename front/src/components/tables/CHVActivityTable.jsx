@@ -1,3 +1,6 @@
+//src/components/tables/CHVActivityTable.jsx
+
+
 export default function CHVActivityTable({ cases }) {
   return (
     <table className="w-full border">

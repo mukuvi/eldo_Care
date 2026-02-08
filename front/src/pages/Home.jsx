@@ -1,158 +1,271 @@
 import { useNavigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { PhoneCall, ShieldAlert, Truck, Activity } from "lucide-react";
+import { PhoneCall, ShieldAlert, Truck, Activity, HeartPulse, Clock, MapPin } from "lucide-react";
+
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2 }
+  }
+};
 
 export default function Home() {
   const navigate = useNavigate();
 
-  // Animation variants for reusability
-  const fadeInUp = {
-    initial: { opacity: 0, y: 30 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.6 }
-  };
-
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-red-100">
-      
-      {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden bg-white pt-20 pb-16 lg:pt-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium leading-6 text-green-700 ring-1 ring-inset ring-green-700/10 bg-green-50 mb-6"
-          >
-            <Activity className="w-4 h-4 mr-2" />
-            Reliable Health Access 24/7
-          </motion.div>
-          
-          <motion.h1 
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* 1. Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-red-50/30 pt-20 pb-32 lg:pt-32">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-green-400 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-red-400 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl font-extrabold tracking-tight sm:text-6xl text-slate-900 max-w-3xl"
+            transition={{ duration: 0.8 }}
+            className="inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-medium text-green-800 mb-6"
           >
-            Health Access & <span className="text-red-600">Emergency</span> Response
+            <Activity className="w-5 h-5" />
+            24/7 Health Access – No Apps Needed
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-6"
+          >
+            Instant Voice <span className="text-red-600">Emergency</span> & Health Triage
           </motion.h1>
 
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-6 text-lg leading-8 text-slate-600 max-w-2xl"
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto mb-10 leading-relaxed"
           >
-            Fast, voice-based health triage connecting communities to care in minutes. 
-            No waiting on hold. No complicated apps. Just a phone call when it matters most.
+            Just dial or request a call — get immediate triage, guidance, and escalation to hospitals or ambulances when it matters most.
           </motion.p>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-10"
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center"
           >
             <button
               onClick={() => navigate("/call-me")}
-              className="group relative flex items-center justify-center gap-x-2 rounded-full bg-red-600 px-8 py-4 text-lg font-bold text-white shadow-lg hover:bg-red-700 hover:scale-105 transition-all duration-300 active:scale-95"
+              className="group relative px-10 py-5 bg-red-600 text-white text-xl font-bold rounded-full shadow-2xl hover:bg-red-700 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3"
             >
-              <PhoneCall className="w-5 h-5 animate-bounce" />
-              Request a Call Now
+              <PhoneCall className="w-6 h-6 animate-pulse" />
+              Request Emergency Call
             </button>
+
+            {/* <button
+              onClick={() => navigate("/learn-more")}
+              className="px-10 py-5 bg-white text-green-700 border-2 border-green-600 text-xl font-semibold rounded-full hover:bg-green-50 transition-all duration-300"
+            >
+              Learn How It Works
+            </button> */}
+          </motion.div>
+
+          {/* Trust Signals */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="mt-16 flex flex-wrap justify-center gap-10 text-sm text-gray-600"
+          >
+            <div className="flex items-center gap-2">
+              <ShieldAlert className="w-5 h-5 text-green-600" />
+              <span>End-to-End Encrypted</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-green-600" />
+              <span>Response in 30 seconds</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-green-600" />
+              <span>GPS-Enabled Escalation</span>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* 2. THE STORY SECTION (Using your images) */}
+      {/* 2. Problem → Solution Storytelling */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          
-          {/* Part 1: The Problem */}
-          <motion.div {...fadeInUp} className="flex flex-col md:flex-row items-center gap-12 mb-32">
-            <div className="flex-1">
-              <img 
-                src="/patient.jpg" 
-                alt="Frustrated Patient" 
-                className="rounded-2xl shadow-2xl border-4 border-white transform -rotate-2 hover:rotate-0 transition-transform duration-500"
-              />
-            </div>
-            <div className="flex-1 space-y-4 text-center md:text-left">
-              <h2 className="text-3xl font-bold text-slate-800 italic">The Old Way is Broken</h2>
-              <p className="text-slate-600 text-lg">
-                Traditional healthcare waiting lines are long and stressful. When you're sick, 
-                the last thing you want is to navigate complex websites or wait hours for a response.
-              </p>
-            </div>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Healthcare Shouldn't Be Complicated
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Long queues, missed calls, confusing apps — we built a simpler way.
+            </p>
           </motion.div>
 
-          {/* Part 2: The Solution */}
-          <motion.div {...fadeInUp} className="flex flex-col md:flex-row-reverse items-center gap-12">
-            <div className="flex-1">
-              <img 
-                src="/call.jpg" 
-                alt="Patient getting help via call" 
-                className="rounded-2xl shadow-2xl border-4 border-white transform rotate-2 hover:rotate-0 transition-transform duration-500"
-              />
-            </div>
-            <div className="flex-1 space-y-4 text-center md:text-left">
-              <h2 className="text-3xl font-bold text-green-700">A Faster Human Connection</h2>
-              <p className="text-slate-600 text-lg">
-                Enter your number and <strong>your phone rings instantly</strong>. Speak to an AI triage 
-                specialist who understands your needs and routes you to the right care immediately.
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Problem */}
+            <motion.div variants={fadeInUp} className="space-y-6">
+              <div className="inline-block bg-red-50 text-red-700 px-4 py-2 rounded-full text-sm font-medium">
+                The Old Way
+              </div>
+              <h3 className="text-3xl font-bold text-gray-900">
+                Waiting Can Cost Lives
+              </h3>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                In emergencies, every minute matters. Traditional systems force patients to wait on hold, navigate apps, or travel long distances — often too late.
               </p>
-            </div>
-          </motion.div>
+              <ul className="space-y-4 text-gray-700">
+                <li className="flex items-start gap-3">
+                  <span className="text-red-600 text-xl">×</span>
+                  <span>Average wait time: 20–60 minutes</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-red-600 text-xl">×</span>
+                  <span>Language barriers and tech access issues</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-red-600 text-xl">×</span>
+                  <span>No real-time escalation to ambulances</span>
+                </li>
+              </ul>
+            </motion.div>
 
+            {/* Solution */}
+            <motion.div variants={fadeInUp} className="space-y-6">
+              <div className="inline-block bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
+                The Eldo Care Way
+              </div>
+              <h3 className="text-3xl font-bold text-gray-900">
+                Instant Voice-Powered Help
+              </h3>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Request a call — your phone rings immediately. Speak naturally. Get triaged by AI, guided, and escalated to hospitals or ambulances in seconds.
+              </p>
+              <ul className="space-y-4 text-gray-700">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-600 text-xl">✓</span>
+                  <span>No app or internet required</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-600 text-xl">✓</span>
+                  <span>Works in any language</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-600 text-xl">✓</span>
+                  <span>Automatic GPS-triggered ambulance dispatch</span>
+                </li>
+              </ul>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* 3. HOW IT WORKS (THE WORKFLOW) */}
-      <section className="py-24 bg-slate-900 text-white">
+      {/* 3. How It Works */}
+      <section className="py-24 bg-gradient-to-b from-white to-green-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Real-Time Escalation</h2>
-            <p className="mt-4 text-slate-400">What happens when things get serious?</p>
-          </div>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              How Eldo Care Works
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              From your phone call to emergency response — in minutes
+            </p>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <motion.div whileHover={{ y: -10 }} className="text-center p-6 bg-slate-800 rounded-2xl border border-slate-700">
-              <div className="mx-auto w-12 h-12 bg-blue-500/10 text-blue-400 rounded-lg flex items-center justify-center mb-4">
-                <PhoneCall />
-              </div>
-              <h3 className="font-bold text-xl mb-2">1. Quick Call</h3>
-              <p className="text-slate-400">Key in your number. Our system calls you back within seconds.</p>
-            </motion.div>
-
-            <motion.div whileHover={{ y: -10 }} className="text-center p-6 bg-slate-800 rounded-2xl border border-slate-700">
-              <div className="mx-auto w-12 h-12 bg-red-500/10 text-red-400 rounded-lg flex items-center justify-center mb-4">
-                <ShieldAlert />
-              </div>
-              <h3 className="font-bold text-xl mb-2">2. Hospital Alert</h3>
-              <p className="text-slate-400">If risk escalates, partner hospitals are notified in real-time.</p>
-            </motion.div>
-
-            <motion.div whileHover={{ y: -10 }} className="text-center p-6 bg-slate-800 rounded-2xl border border-slate-700">
-              <div className="mx-auto w-12 h-12 bg-green-500/10 text-green-400 rounded-lg flex items-center justify-center mb-4">
-                <Truck />
-              </div>
-              <h3 className="font-bold text-xl mb-2">3. Emergency Dispatch</h3>
-              <p className="text-slate-400">Ambulances are dispatched automatically to your GPS location.</p>
-            </motion.div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <PhoneCall className="w-12 h-12 text-green-600" />,
+                title: "Request a Call",
+                desc: "Enter your number or dial our toll-free line. We call you back instantly — no app needed."
+              },
+              {
+                icon: <HeartPulse className="w-12 h-12 text-red-600" />,
+                title: "AI-Powered Triage",
+                desc: "Describe your symptoms in any language. Our AI assesses urgency and gives immediate guidance."
+              },
+              {
+                icon: <Truck className="w-12 h-12 text-green-600" />,
+                title: "Rapid Escalation",
+                desc: "High-risk cases trigger real-time alerts to hospitals and ambulances with your GPS location."
+              }
+            ].map((step, idx) => (
+              <motion.div
+                key={idx}
+                variants={fadeInUp}
+                className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 group"
+              >
+                <div className="mb-6 transform group-hover:scale-110 transition-transform">
+                  {step.icon}
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
+                <p className="text-gray-600 text-lg leading-relaxed">{step.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* FOOTER CTA */}
-      <footer className="py-20 text-center border-t border-slate-200">
-        <h2 className="text-2xl font-bold mb-6">Ready to prioritize your health?</h2>
-        <button
-          onClick={() => navigate("/call-me")}
-          className="bg-slate-900 text-white px-10 py-3 rounded-full font-semibold hover:bg-slate-800 transition-colors"
-        >
-          Get Started
-        </button>
-      </footer>
+      {/* 4. Final CTA */}
+      <section className="py-24 bg-green-700 text-white">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold mb-8"
+          >
+            Your Health Can't Wait
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto opacity-90"
+          >
+            When every second counts, Eldo Care connects you to help instantly — no delays, no barriers.
+          </motion.p>
+
+          <motion.button
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            onClick={() => navigate("/call-me")}
+            className="group relative px-12 py-6 bg-white text-green-700 text-2xl font-bold rounded-full shadow-2xl hover:bg-gray-100 hover:scale-105 transition-all duration-300"
+          >
+            <PhoneCall className="inline w-8 h-8 mr-3 text-green-600 group-hover:animate-pulse" />
+            Request Emergency Call Now
+          </motion.button>
+        </div>
+      </section>
     </div>
   );
 }

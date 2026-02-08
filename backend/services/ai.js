@@ -30,8 +30,7 @@ async function getAIResponse(transcription) {
   console.log("[GEMINI] Processing transcription:", transcription);
 
   try {
-    // UPDATED: Using Gemini 2.5 Flash (The current stable production model)
-    // If you want the absolute latest, use "gemini-3-flash-preview"
+    
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash", 
       systemInstruction: systemPrompt,

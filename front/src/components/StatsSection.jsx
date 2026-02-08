@@ -1,13 +1,13 @@
-// frontend/components/StatsSection.jsx
 export default function StatsSection({ overview }) {
-  // Default/fallback values to prevent crashes
-  const stats = overview || {
+  // Safe defaults - prevent undefined crashes
+  const stats = {
     totalCalls: 0,
     activeCases: 0,
-    resolvedCases: 0
+    resolvedCases: 0,
+    ...overview // override with real data if present
   };
 
-  // No reduce/map needed - just use the flat properties
+  // Calculate total safely
   const total = stats.totalCalls + stats.activeCases + stats.resolvedCases;
 
   return (
@@ -30,15 +30,21 @@ export default function StatsSection({ overview }) {
           <tbody className="divide-y divide-gray-100">
             <tr className="hover:bg-gray-50 transition-colors">
               <td className="px-6 py-4 font-medium text-gray-700">Total Calls</td>
-              <td className="px-6 py-4 text-right text-gray-600">{stats.totalCalls.toLocaleString()}</td>
+              <td className="px-6 py-4 text-right text-gray-600">
+                {stats.totalCalls.toLocaleString()}
+              </td>
             </tr>
             <tr className="hover:bg-gray-50 transition-colors">
               <td className="px-6 py-4 font-medium text-gray-700">Active Cases</td>
-              <td className="px-6 py-4 text-right text-gray-600">{stats.activeCases.toLocaleString()}</td>
+              <td className="px-6 py-4 text-right text-gray-600">
+                {stats.activeCases.toLocaleString()}
+              </td>
             </tr>
             <tr className="hover:bg-gray-50 transition-colors">
               <td className="px-6 py-4 font-medium text-gray-700">Resolved Cases</td>
-              <td className="px-6 py-4 text-right text-gray-600">{stats.resolvedCases.toLocaleString()}</td>
+              <td className="px-6 py-4 text-right text-gray-600">
+                {stats.resolvedCases.toLocaleString()}
+              </td>
             </tr>
           </tbody>
         </table>

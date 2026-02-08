@@ -1,3 +1,5 @@
+//src/components/tables/CHVTable.jsx
+
 import { useEffect, useState } from "react";
 import { fetchCHVActivity } from "../../api/ngo.api";
 
