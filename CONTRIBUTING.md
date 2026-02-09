@@ -1,9 +1,11 @@
+
+````markdown
 #  Contributing to EldoCare
 
 Thank you for your interest in contributing to **EldoCare**!  
 We welcome contributions that improve functionality, usability and documentation.
 
-
+---
 
 ## How to Contribute
 
